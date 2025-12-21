@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from "express";
-import { createRoutes } from "./routes";
 import { RegistryService } from "./core/services/registry";
 import { HealthcheckService } from "./core/services/healthcheck";
+import Router from "./module/presentation/appointment-routes";
 
 class App {
     readonly app: Application;
@@ -39,8 +39,7 @@ class App {
                 }
             })
         });
-
-        this.app.use("/api", createRoutes(this.registry));
+        this.app.use("/appointment", Router)
     }
 
     private mountHealthChecks(): void {

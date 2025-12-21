@@ -24,6 +24,59 @@ export const createRoutes = (registry: RegistryService) => {
         }
     })
 
+    router.get("/services", (req: Request, res: Response) => {
+        try {
+            const services = registry.getServicesByName("")
+
+            res.json(services);
+        }
+        catch (error) {
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    })
+
+    router.get("/services/name/:name", (req: Request, res: Response) => {
+        try {
+            const paramSchema = z.object({
+                name: z.string().min(3)
+            })
+
+            const querySchema = z.object({
+                healthy: z.coerce.boolean().default(false)
+            })
+
+            const validatedParams = paramSchema.parse(req.params)
+            const validatedQuery = querySchema.parse(req.query)
+
+            const services = validatedQuery.healthy
+                ? registry.getHealthyServicesByName(validatedParams.name)
+                : registry.getServicesByName(validatedParams.name)
+
+            res.json(services);
+        } catch (error) {
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    })
+
+    router.get("/services/id/:id", (req: Request, res: Response) => {
+        try {
+            const schema = z.object({
+                id: z.string()
+            })
+
+            const validatedParams = schema.parse(req.params)
+            const service = registry.getService(validatedParams.id)
+
+            if (!service) {
+                res.status(404).json({ error: "Service not found" });
+            } else {
+                res.json(service);
+            }
+        } catch (error) {
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    })
+
     router.put("/services/:id/heartbeat", (req: Request, res: Response) => {
         try {
             const schema = z.object({
@@ -70,16 +123,15 @@ export const createRoutes = (registry: RegistryService) => {
 
     });
 
-    router.get("/services", (req: Request, res: Response) => {
-        try {
-            const services = registry.getServicesByName("")
 
-            res.json(services);
-        }
-        catch (error) {
+    router.get("/stats", (req: Request, res: Response) => {
+        try {
+            const stats = registry.getStats();
+            res.json(stats);
+        } catch (error) {
+            res.status(500).json({ error: "Internal Server Error" });
         }
     })
-
 
     return router
 }
