@@ -1,0 +1,35 @@
+services:
+  mysql-server:
+    image: mysql:8
+    container_name: mysql-server
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: appointments_db
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - net-ms
+
+  mysql-client:
+    image: phpmyadmin
+    container_name: mysql-client
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql-server
+      PMA_USER: appuser
+      PMA_PASSWORD: apppassword
+    networks:
+      - net-ms
+
+volumes:
+  mysql-data:
+    name: mysql-data
+
+networks:
+  net-ms:
+    driver: bridge

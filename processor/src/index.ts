@@ -2,7 +2,6 @@ import app from "./app";
 import { DatabaseBootstrap, ServerBootstrap } from "./core/bootstrap";
 import "reflect-metadata"
 import "../env"
-import { DiscoveryClient } from "./core/clients/discovery.client";
 
 (async () => {
     try {
@@ -14,10 +13,6 @@ import { DiscoveryClient } from "./core/clients/discovery.client";
         const results = await Promise.all(listeningPromises);
 
         results.forEach(result => console.log(result));
-
-        const discoveryClient = new DiscoveryClient();
-        await discoveryClient.register();
-
     } catch (error) {
         console.error("Error during server bootstrap:", error);
     }
