@@ -6,8 +6,11 @@ export class AppointmentController {
     constructor(private application: Application) { }
 
     handle(req: Request, res: Response) {
+        console.log("Received appointment request:", req.body);
+
         try {
             const scheme = z.object({
+                id: z.number(),
                 slotId: z.number().min(1),
                 patientId: z.number().min(1)
             })
@@ -15,6 +18,7 @@ export class AppointmentController {
             const validation = scheme.parse(req.body);
 
             const appointment = new Appointment({
+                id: validation.id,
                 slotId: validation.slotId,
                 patientId: validation.patientId,
             })

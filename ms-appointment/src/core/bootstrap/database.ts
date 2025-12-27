@@ -1,3 +1,4 @@
+import { env } from "../../../env";
 import { AppointmentData } from "../../module/application/appointment-data";
 import { DataSource, DataSourceOptions } from "typeorm";
 
@@ -8,15 +9,15 @@ export class DatabaseBootstrap {
         return new Promise(async (resolve, reject) => {
             const options: DataSourceOptions = {
                 type: "mysql",
-                host: "localhost",
-                port: 3306,
-                username: "appuser",
-                password: "apppassword",
-                database: "appointments_db",
+                host: env.DB_HOST,
+                port: env.DB_PORT,
+                username: env.DB_USERNAME,
+                password: env.DB_PASSWORD,
+                database: env.DB_NAME,
                 entities: [AppointmentData],
-                synchronize: true,
-                logging: true,
-                poolSize: 10,
+                synchronize: env.DB_SYNCHRONIZE,
+                logging: env.DB_LOGGING,
+                poolSize: env.DB_POOL_SIZE,
             }
 
             try {

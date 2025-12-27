@@ -13,7 +13,8 @@ class AppointmentRoute {
     }
 
     private mountRoutes() {
-        this.router.post("/", this.controller.handle.bind(this.controller))
+        this.router.post("/", this.controller.create.bind(this.controller))
+        this.router.put("/", this.controller.update.bind(this.controller))
     }
 }
 

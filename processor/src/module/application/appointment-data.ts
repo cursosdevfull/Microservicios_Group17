@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Status } from "./appointment";
 
 @Entity({ name: "appointment-processor" })
 export class AppointmentData {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id!: number;
 
     @Column()

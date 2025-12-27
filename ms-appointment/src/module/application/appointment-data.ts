@@ -15,6 +15,6 @@ export class AppointmentData {
     @Column()
     createdAt!: Date;
 
-    @Column({ type: "varchar" })
-    status!: Status
+    @Column({ type: "json" })
+    events!: Array<{ status: Status; timestamp: Date }>;
 }

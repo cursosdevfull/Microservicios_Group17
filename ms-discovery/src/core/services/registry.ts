@@ -22,7 +22,7 @@ export class RegistryService {
             registeredAt: now
         }
 
-        this.services.set(serviceId, service);
+        this.services.set(service.name, service);
         console.log(`Service ${service.name} registered with ID ${service.id}`);
 
         return service
@@ -51,11 +51,11 @@ export class RegistryService {
     }
 
     getServicesByName(name: string): TServiceInstance[] {
-        return Array.from(this.services.values())
+        return Array.from(this.services.values()).filter(service => service.name === name || name === "");
     }
 
     getHealthyServicesByName(name: string): TServiceInstance[] {
-        return Array.from(this.services.values()).filter(service => service.status === EnumServiceStatus.HEALTHY);
+        return Array.from(this.services.values()).filter(service => service.status === EnumServiceStatus.HEALTHY && service.name === name);
     }
 
     getService(serviceId: string): TServiceInstance | null {

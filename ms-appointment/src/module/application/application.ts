@@ -9,4 +9,13 @@ export class Application {
         const appointmentData = AppointmentDto.fromDomainToData(appointment) as AppointmentData;
         this.port.save(appointmentData);
     }
+
+    retrieve(id: number) {
+        return this.port.retrieve(id);
+    }
+
+    update(appointment: Appointment) {
+        const appointmentData = AppointmentDto.fromDomainToData(appointment) as AppointmentData;
+        return this.port.update(appointmentData);
+    }
 }

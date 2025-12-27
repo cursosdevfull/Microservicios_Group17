@@ -12,7 +12,7 @@ export class DiscoveryClient {
             name: this.name,
             host: this.host,
             port: this.portService,
-            healthCheckUrl: `http://${this.host}:${this.portService}/health`
+            healthCheckUrl: `${this.host}:${this.portService}/health`
         }
 
         try {

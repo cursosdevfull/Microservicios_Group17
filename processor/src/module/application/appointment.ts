@@ -1,7 +1,9 @@
 export enum Status {
-    QUEUED = "queued",
+    CANCELED = "canceled",
     COMPLETED = "completed",
-    CANCELED = "canceled"
+    ERROR = "error",
+    QUEUED = "queued",
+    RECEIVED = "received"
 }
 
 export type AppointmentEssential = {
@@ -16,6 +18,7 @@ export type AppointmentOptionals = {
 }
 
 export type AppointmentProps = AppointmentEssential & Partial<AppointmentOptionals>;
+export type AppointmentUpdateProps = Pick<AppointmentOptionals, "status">;
 
 export class Appointment {
     private id?: number;
@@ -39,7 +42,7 @@ export class Appointment {
             this.id = props.id;
         }
 
-        this.status = props.status ? props.status : Status.QUEUED;
+        this.status = props.status ? props.status : Status.RECEIVED;
     }
 
     properties() {
@@ -50,5 +53,9 @@ export class Appointment {
             createdAt: this.createdAt,
             status: this.status
         }
+    }
+
+    update(props: AppointmentUpdateProps) {
+        Object.assign(this, props);
     }
 }

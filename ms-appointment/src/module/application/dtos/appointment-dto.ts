@@ -10,7 +10,7 @@ export class AppointmentDto {
             slotId: data.slotId,
             patientId: data.patientId,
             createdAt: data.createdAt,
-            status: data.status
+            events: data.events
         });
     }
 
@@ -24,7 +24,7 @@ export class AppointmentDto {
         appointmentData.slotId = domain.properties().slotId;
         appointmentData.patientId = domain.properties().patientId;
         appointmentData.createdAt = domain.properties().createdAt;
-        appointmentData.status = domain.properties().status as Status;
+        appointmentData.events = domain.properties().events as Array<{ status: Status; timestamp: Date }>;
         return appointmentData;
     }
 }

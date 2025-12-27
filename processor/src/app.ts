@@ -11,8 +11,8 @@ class App {
     constructor() {
         this.app = express()
         this.setupMiddlewares();
-        this.mountRoutes();
         this.mountHealthChecks();
+        this.mountRoutes();
     }
 
     private setupMiddlewares(): void {
@@ -23,20 +23,9 @@ class App {
     private mountRoutes(): void {
         this.app.get("/", (req, res) => {
             res.json({
-                name: "Microservice Discovery",
+                name: "Microservice Processor Service",
                 version: "1.0.0",
-                description: "Microservice Discovery Service",
-                endpoints: {
-                    health: "/health",
-                    healthcheck: "/healthcheck",
-                    register: "/api/services",
-                    heartbeat: "/api/services/:id/heartbeat",
-                    unregister: "/api/services/:id",
-                    services: "/api/services",
-                    serviceByName: "/api/services/name/:name",
-                    serviceById: "/api/services/id/:id",
-                    stats: "/api/stats"
-                }
+                description: "Microservice Processor Service"
             })
         });
         this.app.use("/v1/appointment", Router)
@@ -50,8 +39,7 @@ class App {
         this.healthcheckService = new HealthcheckService(this.registry);
 
         const healthcheckMiddleware = async (req: Request, res: Response) => {
-            const results = await this.healthcheckService.checkAllServices();
-            res.json(results);
+            res.json({ message: "Processor service is healthy" });
         }
 
         this.app.get("/healthcheck", healthcheckMiddleware);

@@ -11,8 +11,8 @@ class App {
     constructor() {
         this.app = express()
         this.setupMiddlewares();
-        this.mountRoutes();
         this.mountHealthChecks();
+        this.mountRoutes();
     }
 
     private setupMiddlewares(): void {
@@ -50,8 +50,7 @@ class App {
         this.healthcheckService = new HealthcheckService(this.registry);
 
         const healthcheckMiddleware = async (req: Request, res: Response) => {
-            const results = await this.healthcheckService.checkAllServices();
-            res.json(results);
+            res.json({ message: "Appointment service is healthy" });
         }
 
         this.app.get("/healthcheck", healthcheckMiddleware);

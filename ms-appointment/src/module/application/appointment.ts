@@ -1,7 +1,9 @@
 export enum Status {
-    QUEUED = "queued",
+    CANCELED = "canceled",
     COMPLETED = "completed",
-    CANCELED = "canceled"
+    ERROR = "error",
+    QUEUED = "queued",
+    RECEIVED = "received"
 }
 
 export type AppointmentEssential = {
@@ -12,7 +14,7 @@ export type AppointmentEssential = {
 export type AppointmentOptionals = {
     id: number;
     createdAt: Date;
-    status: Status;
+    events: Array<{ status: Status; timestamp: Date }>
 }
 
 export type AppointmentProps = AppointmentEssential & Partial<AppointmentOptionals>;
@@ -22,7 +24,7 @@ export class Appointment {
     private slotId: number;
     private patientId: number;
     private createdAt: Date;
-    private status?: Status
+    private events?: Array<{ status: Status; timestamp: Date }>;
 
     constructor(props: AppointmentProps) {
         if (props.id && props.id < 1) throw new Error("Invalid id");
@@ -39,7 +41,7 @@ export class Appointment {
             this.id = props.id;
         }
 
-        this.status = props.status ? props.status : Status.QUEUED;
+        this.events = props.events ? props.events : [{ status: Status.QUEUED, timestamp: new Date() }];
     }
 
     properties() {
@@ -48,7 +50,7 @@ export class Appointment {
             slotId: this.slotId,
             patientId: this.patientId,
             createdAt: this.createdAt,
-            status: this.status
+            events: this.events
         }
     }
 }
