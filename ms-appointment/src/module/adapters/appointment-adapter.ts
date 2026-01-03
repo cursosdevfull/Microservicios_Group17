@@ -2,11 +2,14 @@ import { DatabaseBootstrap } from "src/core/bootstrap";
 import { AppointmentData } from "../application";
 import { AppointmentPort } from "../ports";
 import { env } from "../../../env";
+import { RabbitMQProducer } from "src/core/services/rabbitmq-producer";
+import { RabbitMQConsumer } from "src/core/services/rabbitmq-consumer";
 
 export class AppointmentAdapter implements AppointmentPort {
     async save(data: AppointmentData) {
         await this.saveToDatabase(data);
-        this.sendAppointmentToProcessor(data);
+        //this.sendAppointmentToProcessor(data);
+        this.sendRabbitMQ(data);
         console.log("Appointment saved", data);
     }
 
@@ -21,9 +24,17 @@ export class AppointmentAdapter implements AppointmentPort {
         return appointment;
     }
 
+    async receiveMessage(consumer: (msg: any) => void) {
+        await RabbitMQConsumer.consumeMessage(consumer);
+    }
+
     private async saveToDatabase(data: AppointmentData) {
         const repository = DatabaseBootstrap.dataSource.getRepository(AppointmentData)
         await repository.save(data);
+    }
+
+    private async sendRabbitMQ(data: AppointmentData) {
+        await RabbitMQProducer.publishAppointmentCreated(data);
     }
 
     private async sendAppointmentToProcessor(data: AppointmentData) {

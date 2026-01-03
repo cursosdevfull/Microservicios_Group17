@@ -26,6 +26,15 @@ services:
     networks:
       - net-ms
 
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"      
+    networks:
+      - net-ms
+
 volumes:
   mysql-data:
     name: mysql-data

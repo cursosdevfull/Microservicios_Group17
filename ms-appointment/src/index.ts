@@ -3,13 +3,23 @@ import { DatabaseBootstrap, ServerBootstrap } from "./core/bootstrap";
 import "reflect-metadata"
 import "../env"
 import { DiscoveryClient } from "./core/clients/discovery.client";
+import { RabbitMQBootstrap } from "./core/bootstrap/rabbitmq";
+import { AppointmentController } from "./module/presentation";
+import { Application } from "./module/application";
+import { AppointmentPort } from "./module/ports";
+import { AppointmentAdapter } from "./module/adapters";
+
+const port: AppointmentPort = new AppointmentAdapter();
+const application = new Application(port);
+const controller = new AppointmentController(application);
 
 (async () => {
     try {
         const serverBootstrap = new ServerBootstrap(app);
         const databaseBootstrap = new DatabaseBootstrap();
+        const rabbitmqBootstrap = new RabbitMQBootstrap();
 
-        const listeningPromises = [serverBootstrap.initialize(), databaseBootstrap.initializate()];
+        const listeningPromises = [serverBootstrap.initialize(), databaseBootstrap.initializate(), rabbitmqBootstrap.initialize()];
 
         const results = await Promise.all(listeningPromises);
 
@@ -17,6 +27,8 @@ import { DiscoveryClient } from "./core/clients/discovery.client";
 
         const discoveryClient = new DiscoveryClient();
         await discoveryClient.register();
+
+        controller.receive();
 
     } catch (error) {
         console.error("Error during server bootstrap:", error);

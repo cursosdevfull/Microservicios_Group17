@@ -15,6 +15,13 @@ const schema = z.object({
     DB_POOL_SIZE: z.coerce.number().default(10),
     DISCOVERY_URL: z.string().default("http://localhost"),
     DISCOVERY_PORT: z.coerce.number().default(4000),
+    RABBITMQ_URL: z.string().default("amqp://localhost"),
+    RABBITMQ_PORT: z.coerce.number().default(5672),
+    RABBITMQ_PREFETCH: z.coerce.number().default(10),
+    RABBITMQ_EXCHANGE_NAME: z.string().default("appointments_exchange"),
+    RABBITMQ_EXCHANGE_TYPE: z.string().default("direct"),
+    RABBITMQ_QUEUE_APPOINTMENTS: z.string().default("appointments_queue"),
+    RABBITMQ_ROUTING_KEY_APPOINTMENT: z.string().default("appointment_routing_key"),
 });
 
 type Env = z.infer<typeof schema>;

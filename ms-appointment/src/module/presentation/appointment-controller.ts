@@ -55,5 +55,7 @@ export class AppointmentController {
         }
     }
 
-
+    async receive() {
+        await this.application.receiveMessage()
+    }
 }

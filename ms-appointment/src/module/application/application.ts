@@ -1,3 +1,4 @@
+import { RabbitMQBootstrap } from "src/core/bootstrap/rabbitmq";
 import { Appointment, AppointmentData } from ".";
 import { AppointmentPort } from "../ports/appointment-port";
 import { AppointmentDto } from "./dtos";
@@ -17,5 +18,17 @@ export class Application {
     update(appointment: Appointment) {
         const appointmentData = AppointmentDto.fromDomainToData(appointment) as AppointmentData;
         return this.port.update(appointmentData);
+    }
+
+    async receiveMessage() {
+        await this.port.receiveMessage(this.consumerMessage.bind(this));
+    }
+
+    async consumerMessage(msg: any) {
+        if (msg) {
+            const content = JSON.parse(msg.content.toString());
+            console.log("Received message:", content);
+            RabbitMQBootstrap.getConsumerChannel().ack(msg);
+        }
     }
 }
