@@ -24,8 +24,22 @@ export class AppointmentAdapter implements AppointmentPort {
         return appointment;
     }
 
-    async receiveMessage(consumer: (msg: any) => void) {
-        await RabbitMQConsumer.consumeMessage(consumer);
+    async receiveMessage(cb: (msg: string) => void) {
+        console.log("Starting Kafka consumer...");
+        //await RabbitMQConsumer.consumeMessage(consumer);
+        const consumer = KafkaBootstrap.getConsumer();
+        await consumer.subscribe({ topics: [env.KAFKA_TOPIC], fromBeginning: true })
+        await consumer.run({
+            eachMessage: async ({ topic, partition, message }) => {
+                console.log(`Received message on topic: ${topic}, partition: ${partition}`);
+                if (partition === 1) {
+                    console.log(`Topic = ${topic}, Partition: ${partition}, Message: ${message.value?.toString() || ''} `)
+                    cb(message.value?.toString() || '')
+                } else {
+                    console.log("Solo se procesan mensaje de la partición 1")
+                }
+            }
+        })
     }
 
     private async saveToDatabase(data: AppointmentData) {
