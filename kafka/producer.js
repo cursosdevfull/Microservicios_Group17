@@ -24,8 +24,9 @@ async function start() {
             topic: "updates-client",
             messages: [
                 {
-                    partition,
-                    key: `testing update: ${new Date().getTime()}`,
+                    //partition,
+                    //key: `testing update: ${new Date().getTime()}`,
+                    key: "testing update2",
                     value: JSON.stringify({ message, numPartition: partition })
                 }
             ]
