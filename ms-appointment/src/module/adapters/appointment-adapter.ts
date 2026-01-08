@@ -24,8 +24,16 @@ export class AppointmentAdapter implements AppointmentPort {
         return appointment;
     }
 
-    async receiveMessage(consumer: (msg: any) => void) {
-        await RabbitMQConsumer.consumeMessage(consumer);
+    async receiveMessage(cb: (msg: string) => void) {
+        const consumer = KafkaBootstrap.getConsumer();
+        await consumer.subscribe({ topics: [env.KAFKA_TOPIC_UPDATE], fromBeginning: true })
+        await consumer.run({
+            eachMessage: async ({ topic, partition, message }) => {
+                console.log(`Received message on topic: ${topic}, partition: ${partition}`);
+                console.log(`Topic = ${topic}, Partition: ${partition}, Message: ${message.value?.toString() || ''} `)
+                cb(message.value?.toString() || '')
+            }
+        })
     }
 
     private async saveToDatabase(data: AppointmentData) {
@@ -38,6 +46,7 @@ export class AppointmentAdapter implements AppointmentPort {
     }
 
     private async sendKafka(data: AppointmentData) {
+        console.log("Sending Kafka message", { key: "appointment", value: JSON.stringify(data), partition: data.country });
         const producer = KafkaBootstrap.getProducer();
         await producer.send({
             topic: env.KAFKA_TOPIC,

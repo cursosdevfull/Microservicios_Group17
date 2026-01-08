@@ -1,6 +1,11 @@
 import { env } from "../../../env";
 import { Consumer, Kafka, Producer } from "kafkajs"
 
+interface KafkaTopic {
+    name: string;
+    partitions: number;
+}
+
 export class KafkaBootstrap {
     private static kafka: Kafka
     private static producer: Producer
@@ -27,10 +32,10 @@ export class KafkaBootstrap {
         })
     }
 
-    private static async createTopics(...topicList: string[]) {
+    private static async createTopics(...topicList: KafkaTopic[]) {
         const topics = topicList.map(topic => ({
-            topic,
-            numPartitions: 3,
+            topic: topic.name,
+            numPartitions: topic.partitions,
             replicationFactor: 1
         }))
 
@@ -47,7 +52,7 @@ export class KafkaBootstrap {
     }
 
     private static async connectProducer() {
-        await this.createTopics(env.KAFKA_TOPIC)
+        await this.createTopics({ name: env.KAFKA_TOPIC, partitions: 3 }, { name: env.KAFKA_TOPIC_UPDATE, partitions: 1 })
 
         if (this.producer) return this.producer
 

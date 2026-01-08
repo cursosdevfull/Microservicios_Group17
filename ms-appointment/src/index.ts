@@ -35,7 +35,7 @@ const controller = new AppointmentController(application);
         const discoveryClient = new DiscoveryClient();
         await discoveryClient.register();
 
-        //controller.receive();
+        controller.receive();
 
     } catch (error) {
         console.error("Error during server bootstrap:", error);

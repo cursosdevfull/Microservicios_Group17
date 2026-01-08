@@ -26,6 +26,7 @@ const schema = z.object({
     KAFKA_GROUP_ID: z.string().default("1000"),
     KAFKA_TOPIC: z.string().default("appointments_topic"),
     KAFKA_CLIENT_ID: z.string().default("appointment_service"),
+    KAFKA_TOPIC_UPDATE: z.string().default("appointment_updates_topic"),
 });
 
 type Env = z.infer<typeof schema>;

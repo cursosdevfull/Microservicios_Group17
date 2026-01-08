@@ -1,5 +1,5 @@
 import { RabbitMQBootstrap } from "src/core/bootstrap/rabbitmq";
-import { Appointment, AppointmentData } from ".";
+import { Appointment, AppointmentData, Status } from ".";
 import { AppointmentPort } from "../ports/appointment-port";
 import { AppointmentDto } from "./dtos";
 
@@ -24,11 +24,18 @@ export class Application {
         await this.port.receiveMessage(this.consumerMessage.bind(this));
     }
 
-    async consumerMessage(msg: any) {
+    async consumerMessage(msg: string) {
+        console.log("Consuming message:", msg);
         if (msg) {
-            const content = JSON.parse(msg.content.toString());
-            console.log("Received message:", content);
-            RabbitMQBootstrap.getConsumerChannel().ack(msg);
+            const id = msg;
+            const createdAt = new Date();
+            const appointmentData = await this.port.retrieve(Number(id));
+
+            if (!appointmentData) {
+                console.log("Appointment not found", id);
+                return;
+            }
+            await this.port.update({ id: appointmentData.id, slotId: appointmentData.slotId, patientId: appointmentData.patientId, country: 1, createdAt, events: [...appointmentData.events, { status: Status.COMPLETED, timestamp: createdAt }] });
         }
     }
 }
