@@ -1,0 +1,31 @@
+{
+  "name": "microservicios_group17",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "turbo run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cursosdevfull/Microservicios_Group17.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cursosdevfull/Microservicios_Group17/issues"
+  },
+  "homepage": "https://github.com/cursosdevfull/Microservicios_Group17#readme",
+  "dependencies": {
+    "turbo": "^2.7.4"
+  },
+  "packageManager": "npm@11.4.2",
+  "engines": {
+    "node": "22.12.0"
+  },
+  "workspaces":[
+    "apps/*"
+  ]
+}
