@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-nginx
+spec:
+  containers:
+    - name: web
+      image: nginx:alpine
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-sonarqube
+spec:
+  containers:
+    - name: sonarqube
+      image: sonarqube:alpine
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-balancer
+spec:
+  containers:
+    - name: web
+      image: nginx:alpine
