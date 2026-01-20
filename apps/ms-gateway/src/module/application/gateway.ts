@@ -10,4 +10,8 @@ export class Application {
     createUser(name: string, email: string, password: string) {
         this.port.createUser(name, email, password);
     }
+
+    login(email: string, password: string) {
+        return this.port.login(email, password);
+    }
 }

@@ -1,4 +1,4 @@
-import { env } from "../../../env"
+import { env } from "../../env"
 
 export class DiscoveryClient {
     private readonly discoveryUrl: string = env.DISCOVERY_URL

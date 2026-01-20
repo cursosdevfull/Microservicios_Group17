@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Application, Appointment, Status } from "../application";
 import z from "zod";
 import { AppointmentDto } from "../application/dtos";
-import { EnumCountry } from "src/core/enum";
+import { EnumCountry } from "../../core/enum";
 
 export class AppointmentController {
     constructor(private application: Application) { }

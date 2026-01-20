@@ -8,6 +8,8 @@
         "forceConsistentCasingInFileNames": true,
         "outDir": "./dist",
         "baseUrl": "./",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
         "paths": [],
         "typeRoots": [
             "./node_modules/@types"

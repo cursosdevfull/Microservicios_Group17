@@ -1,4 +1,4 @@
-import { env } from "../../../env";
+import { env } from "../../env";
 import { GatewayPort } from "../ports";
 
 export class GatewayAdapter implements GatewayPort {
@@ -35,6 +35,42 @@ export class GatewayAdapter implements GatewayPort {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ name, email, password })
+        }).then(res => res.json())
+    }
+
+    async login(email: string, password: string): Promise<any> {
+        const discoveryUrl = env.DISCOVERY_URL
+        const discoveryPort = env.DISCOVERY_PORT
+        const serviceName = "auth"
+
+        const result = await fetch(`${discoveryUrl}:${discoveryPort}/api/services/name/${serviceName}?healthy=false`).then(res => res.json())
+        const host = result[0].host
+        const port = result[0].port
+
+        return fetch(`${host}:${port}/v1/auth/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        }).then(res => res.json())
+    }
+
+    async validateAccessToken(token: string): Promise<any> {
+        const discoveryUrl = env.DISCOVERY_URL
+        const discoveryPort = env.DISCOVERY_PORT
+        const serviceName = "auth"
+
+        const result = await fetch(`${discoveryUrl}:${discoveryPort}/api/services/name/${serviceName}?healthy=false`).then(res => res.json())
+        const host = result[0].host
+        const port = result[0].port
+
+        return fetch(`${host}:${port}/v1/auth/validate-access-token`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ accessToken: token })
         }).then(res => res.json())
     }
 }

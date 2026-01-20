@@ -1,4 +1,4 @@
-import { env } from "../../../env";
+import { env } from "../../env";
 import { AppointmentData } from "../../module/application/appointment-data";
 import { DataSource, DataSourceOptions } from "typeorm";
 

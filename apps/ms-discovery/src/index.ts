@@ -1,6 +1,6 @@
 import app from "./app";
 import { ServerBootstrap } from "./core/bootstrap";
-import "../env"
+import "./env"
 
 (async () => {
     try {
@@ -12,7 +12,7 @@ import "../env"
 
         results.forEach(result => console.log(result));
     } catch (error) {
-        console.error("Error during server bootstrap:", error);
+        console.error("Error during execution server bootstrap:", error);
     }
 })()
 

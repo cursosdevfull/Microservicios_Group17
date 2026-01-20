@@ -112,6 +112,157 @@ services:
     networks:
       - net-ms           
 
+  ms-discovery:
+    image: ms-discovery
+    build:
+      context: ./apps/ms-discovery
+      dockerfile: Dockerfile
+    container_name: ms-discovery
+    profiles:
+      - kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - net-ms        
+
+  ms-appointment:
+    image: ms-appointment
+    build:
+      context: ./apps/ms-appointment
+      dockerfile: Dockerfile
+    container_name: ms-appointment
+    profiles:
+      - kafka
+    depends_on:
+      ms-discovery:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4010/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - net-ms  
+
+  ms-appointment-co:
+    image: ms-appointment-co
+    build:
+      context: ./apps/ms-appointment-co
+      dockerfile: Dockerfile
+    container_name: ms-appointment-co
+    profiles:
+      - kafka
+    depends_on:
+      ms-discovery:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4030/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - net-ms        
+
+  ms-appointment-mx:
+    image: ms-appointment-mx
+    build:
+      context: ./apps/ms-appointment-mx
+      dockerfile: Dockerfile
+    container_name: ms-appointment-mx
+    profiles:
+      - kafka
+    depends_on:
+      ms-discovery:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4040/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - net-ms  
+
+  ms-appointment-pe:
+    image: ms-appointment-pe
+    build:
+      context: ./apps/ms-appointment-pe
+      dockerfile: Dockerfile
+    container_name: ms-appointment-pe
+    profiles:
+      - kafka
+    depends_on:
+      ms-discovery:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - net-ms
+
+  ms-auth:
+    image: ms-auth
+    build:
+      context: ./apps/ms-auth
+      dockerfile: Dockerfile
+    container_name: ms-auth
+    profiles:
+      - kafka
+    depends_on:
+      ms-discovery:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4700/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - net-ms            
+
+  ms-user:
+    image: ms-user
+    build:
+      context: ./apps/ms-user
+      dockerfile: Dockerfile
+    container_name: ms-user
+    profiles:
+      - kafka
+    depends_on:
+      ms-discovery:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4600/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - net-ms            
+
+  ms-gateway:
+    image: ms-gateway
+    build:
+      context: ./apps/ms-gateway
+      dockerfile: Dockerfile
+    container_name: ms-gateway
+    ports:
+      - "4500:4500"
+    profiles:
+      - kafka
+    depends_on:
+      ms-discovery:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4500/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - net-ms            
+
 volumes:
   mysql-data:
     name: mysql-data

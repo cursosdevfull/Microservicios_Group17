@@ -1,6 +1,6 @@
 import { Tokens, User } from "../types";
 import * as jwt from "jsonwebtoken";
-import { env } from "../../../env";
+import { env } from "../../env";
 
 export class TokenService {
     static generateTokens(user: User): Tokens {

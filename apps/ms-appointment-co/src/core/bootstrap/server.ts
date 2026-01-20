@@ -1,4 +1,4 @@
-import { env } from "../../../env";
+import { env } from "../../env";
 import { Application } from "express";
 import http from "http";
 

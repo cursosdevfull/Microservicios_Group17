@@ -1,4 +1,4 @@
-import { env } from "../../../env";
+import { env } from "../../env";
 import { UserData } from "../../module/application/user-data";
 import { DataSource, DataSourceOptions } from "typeorm";
 

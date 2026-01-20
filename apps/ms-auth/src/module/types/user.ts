@@ -2,4 +2,5 @@ export type User = {
     email: string;
     name: string;
     refreshToken: string;
+    password: string;
 }

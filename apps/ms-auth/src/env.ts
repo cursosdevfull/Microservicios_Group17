@@ -6,7 +6,7 @@ const schema = z.object({
     PORT: z.coerce.number().default(4000),
     HOST: z.string().default("http_//localhost"),
     JWT_ACCESS_SECRET: z.string().default("defaultaccesssecret"),
-    JWT_ACCESS_EXPIRES_IN: z.string().default("15m"),
+    JWT_ACCESS_EXPIRES_IN: z.string().default("30m"),
     DISCOVERY_URL: z.string().default("http://localhost"),
     DISCOVERY_PORT: z.coerce.number().default(4000),
 

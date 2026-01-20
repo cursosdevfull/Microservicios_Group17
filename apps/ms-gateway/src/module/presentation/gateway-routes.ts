@@ -3,6 +3,8 @@ import { Application } from "../application";
 import { GatewayAdapter } from "../adapters";
 import { GatewayController } from "./gateway-controller";
 import { GatewayPort } from "../ports";
+import { isAuthenticated } from "../../core/guards/authentication";
+import { protectionDataPersonal } from "../../core/middleware/protection-data-personal";
 
 class GatewayRoute {
     readonly router = express.Router()
@@ -12,8 +14,9 @@ class GatewayRoute {
     }
 
     private mountRoutes() {
-        this.router.post("/appointment", this.controller.bookAppointment.bind(this.controller))
-        this.router.post("/user", this.controller.createUser.bind(this.controller))
+        this.router.post("/appointment", isAuthenticated, protectionDataPersonal(), this.controller.bookAppointment.bind(this.controller))
+        this.router.post("/user", isAuthenticated, protectionDataPersonal(), this.controller.createUser.bind(this.controller))
+        this.router.post("/login", protectionDataPersonal(), this.controller.login.bind(this.controller))
     }
 }
 

@@ -41,4 +41,21 @@ export class GatewayController {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
+
+    async login(req: Request, res: Response) {
+        try {
+            const scheme = z.object({
+                email: z.email("Invalid email format"),
+                password: z.string().min(6, "Password must be at least 6 characters long")
+            })
+
+            const validation = scheme.parse(req.body);
+
+            const loginResult = await this.application.login(validation.email, validation.password);
+            res.status(201).json({ message: "User logged in successfully", data: loginResult });
+        } catch (error) {
+            console.error("Error in GatewayController:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    }
 }

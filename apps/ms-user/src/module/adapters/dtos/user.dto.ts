@@ -1,4 +1,4 @@
-import { User, UserData } from "src/module/application";
+import { User, UserData } from "../../../module/application";
 
 export class UserDto {
     static fromDomainToData(domain: User | User[]): UserData | UserData[] {

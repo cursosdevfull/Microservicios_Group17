@@ -1,5 +1,5 @@
 
-import { env } from "../../../env";
+import { env } from "../../env";
 import { Appointment, AppointmentData, AppointmentProps } from "../../module/application";
 import { RabbitMQBootstrap } from "../bootstrap/rabbitmq";
 

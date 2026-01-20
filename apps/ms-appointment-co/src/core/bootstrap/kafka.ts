@@ -1,4 +1,4 @@
-import { env } from "../../../env";
+import { env } from "../../env";
 import { Consumer, Kafka, Producer } from "kafkajs"
 
 interface KafkaTopic {

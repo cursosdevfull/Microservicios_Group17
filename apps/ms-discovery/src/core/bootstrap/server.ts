@@ -1,6 +1,6 @@
-import { env } from "../../../env";
 import { Application } from "express";
 import http from "http";
+import { env } from "../../env";
 
 export class ServerBootstrap {
     constructor(private readonly app: Application) { }

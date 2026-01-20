@@ -1,6 +1,6 @@
 import app from "./app";
 import { ServerBootstrap } from "./core/bootstrap";
-import "../env"
+import "./env"
 import { DiscoveryClient } from "./core/clients/discovery.client";
 
 (async () => {

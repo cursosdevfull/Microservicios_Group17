@@ -1,7 +1,7 @@
 import app from "./app";
 import { DatabaseBootstrap, ServerBootstrap } from "./core/bootstrap";
 import "reflect-metadata"
-import "../env"
+import "./env"
 import { DiscoveryClient } from "./core/clients/discovery.client";
 
 (async () => {

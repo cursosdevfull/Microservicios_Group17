@@ -1,5 +1,5 @@
 import amqp, { ChannelModel, Channel } from 'amqplib'
-import { env } from "../../../env";
+import { env } from "../../env";
 
 export class RabbitMQBootstrap {
     private static connection: ChannelModel

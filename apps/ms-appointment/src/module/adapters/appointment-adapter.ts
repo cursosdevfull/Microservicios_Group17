@@ -1,7 +1,7 @@
 import { DatabaseBootstrap, KafkaBootstrap } from "../../core/bootstrap";
 import { AppointmentData } from "../application";
 import { AppointmentPort } from "../ports";
-import { env } from "../../../env";
+import { env } from "../../env";
 import { RabbitMQProducer } from "../../core/services";
 
 export class AppointmentAdapter implements AppointmentPort {

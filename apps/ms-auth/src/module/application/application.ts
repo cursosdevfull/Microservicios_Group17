@@ -11,7 +11,7 @@ export class Application {
         const user = await this.port.login(auth);
 
         if (user) {
-            return TokenService.generateTokens(user);
+            return { ...TokenService.generateTokens(user), password: user.password };
         }
 
         return null

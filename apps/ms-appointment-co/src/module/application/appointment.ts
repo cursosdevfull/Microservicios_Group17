@@ -1,4 +1,4 @@
-import { EnumCountry } from "src/core/enum/country";
+import { EnumCountry } from "../../core/enum/country";
 
 export enum Status {
     CANCELED = "canceled",

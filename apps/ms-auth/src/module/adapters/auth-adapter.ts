@@ -1,4 +1,4 @@
-import { env } from "../../../env";
+import { env } from "../../env";
 import { Auth } from "../application";
 import { AuthPort } from "../ports";
 import { User } from "../types";

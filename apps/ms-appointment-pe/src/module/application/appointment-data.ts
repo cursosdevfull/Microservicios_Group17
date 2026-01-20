@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Status } from "./appointment";
 
 @Entity({ name: "appointment-pe" })
 export class AppointmentData {
@@ -16,4 +17,7 @@ export class AppointmentData {
 
     @Column()
     createdAt!: Date;
+
+    @Column({ type: "json" })
+    events!: Array<{ status: Status; timestamp: Date }>;
 }
