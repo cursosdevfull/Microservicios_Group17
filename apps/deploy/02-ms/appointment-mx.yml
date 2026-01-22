@@ -7,8 +7,8 @@ spec:
   selector:
     app: appointment-mx-app
   ports:
-    - port: 80
-      targetPort: 4030
+    - port: 4400
+      targetPort: 4400
       protocol: TCP
 ---
 apiVersion: apps/v1
@@ -28,37 +28,64 @@ spec:
       containers:
         - name: appointment-mx
           image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment-mx
+          resources:
+            limits:
+              cpu: 0.5
+              memory: "200Mi"
+            requests:
+              cpu: 0.5
+              memory: "100Mi"            
           imagePullPolicy: Always
           ports:
-            - containerPort: 4030
+            - containerPort: 4400
           env:
+            - name: NAME
+              value: "appointment-mx"
             - name: PORT
-              value: "4030"
+              value: "4400"
+            - name: HOST
+              value: "http://appointment-mx-svc"
             - name: DB_HOST
               value: "database-1.cmuv7any6zxa.us-east-1.rds.amazonaws.com"
             - name: DB_PORT
               value: "3306"
-            - name: DB_USER
-              value: "admin"
-            - name: DB_PASS
-              value: "Elgigante2025"
+            - name: DB_USERNAME
+              value: "appuser"
+            - name: DB_PASSWORD
+              value: "apppassword"
             - name: DB_NAME
-              value: "appointment"
-            - name: DB_SYNC
+              value: "appointments_db"
+            - name: DB_SYNCHRONIZE
               value: "true"
-            - name: DB_LOGG
-              value: "true"
+            - name: DB_LOGGING
+              value: "false"
             - name: DB_POOL_SIZE
               value: "10"
+            - name: DISCOVERY_URL
+              value: "http://discovery-svc"
+            - name: DISCOVERY_PORT
+              value: "4000"
+            - name: RABBITMQ_URL
+              value: "amqp://localhost"
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_PREFETCH
+              value: "10"
+            - name: RABBITMQ_EXCHANGE_NAME
+              value: "appointments_exchange"
+            - name: RABBITMQ_EXCHANGE_TYPE
+              value: "direct"
+            - name: RABBITMQ_QUEUE_APPOINTMENTS
+              value: "appointments_queue"
+            - name: RABBITMQ_ROUTING_KEY_APPOINTMENT
+              value: "appointment_routing_key"
             - name: KAFKA_BROKER
               value: "kafka-svc:29092"
-            - name: KAFKA_TOPIC_MX
-              value: appointment-topic-mx
-            - name: KAFKA_TOPIC_CONFIRM
-              value: appointment-topic-confirm
-            - name: KAFKA_TOPIC_ERROR
-              value: appointment-topic-error
             - name: KAFKA_GROUP_ID
               value: "3000"
-            - name: CLIENT_ID
-              value: client-appointment
+            - name: KAFKA_TOPIC
+              value: "appointments_topic"
+            - name: KAFKA_CLIENT_ID
+              value: "appointment_service"
+            - name: KAFKA_TOPIC_UPDATE
+              value: "appointment_updates_topic"

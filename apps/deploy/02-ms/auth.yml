@@ -7,8 +7,8 @@ spec:
   selector:
     app: auth-app
   ports:
-    - port: 80
-      targetPort: 4080
+    - port: 4700
+      targetPort: 4700
       protocol: TCP
 ---
 apiVersion: apps/v1
@@ -28,15 +28,28 @@ spec:
       containers:
         - name: auth
           image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/auth
+          resources:
+            limits:
+              cpu: 0.5
+              memory: "200Mi"
+            requests:
+              cpu: 0.5
+              memory: "100Mi"            
           imagePullPolicy: Always
           ports:
-            - containerPort: 4080
+            - containerPort: 4700
           env:
+            - name: NAME
+              value: "auth"
             - name: PORT
-              value: "4080"
-            - name: JWT_SECRET
-              value: "your_jwt_secret"
-            - name: JWT_EXPIRATION
-              value: "10h"
-            - name: SERVICE_NAME_PATIENT
-              value: "http://patient-svc/patient"
+              value: "4700"
+            - name: HOST
+              value: "http://auth-svc"
+            - name: JWT_ACCESS_SECRET
+              value: "defaultaccesssecret"
+            - name: JWT_ACCESS_EXPIRES_IN
+              value: "30m"
+            - name: DISCOVERY_URL
+              value: "http://discovery-svc"
+            - name: DISCOVERY_PORT
+              value: "4000"

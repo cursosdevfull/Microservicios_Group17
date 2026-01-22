@@ -15,7 +15,7 @@ class GatewayRoute {
 
     private mountRoutes() {
         this.router.post("/appointment", isAuthenticated, protectionDataPersonal(), this.controller.bookAppointment.bind(this.controller))
-        this.router.post("/user", isAuthenticated, protectionDataPersonal(), this.controller.createUser.bind(this.controller))
+        this.router.post("/user", protectionDataPersonal(), this.controller.createUser.bind(this.controller))
         this.router.post("/login", protectionDataPersonal(), this.controller.login.bind(this.controller))
     }
 }

@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: user-app
+  ports:
+    - port: 4600
+      targetPort: 4600
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-app
+  template:
+    metadata:
+      labels:
+        app: user-app
+    spec:
+      containers:
+        - name: user
+          image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/user
+          resources:
+            limits:
+              cpu: 0.5
+              memory: "200Mi"
+            requests:
+              cpu: 0.5
+              memory: "100Mi"            
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4600
+          env:
+            - name: NAME
+              value: "user"
+            - name: PORT
+              value: "4600"
+            - name: HOST
+              value: "http://user-svc"
+            - name: DB_HOST
+              value: "database-1.cmuv7any6zxa.us-east-1.rds.amazonaws.com"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USERNAME
+              value: "appuser"
+            - name: DB_PASSWORD
+              value: "apppassword"
+            - name: DB_NAME
+              value: "appointments_db"
+            - name: DB_SYNCHRONIZE
+              value: "true"
+            - name: DB_LOGGING
+              value: "false"
+            - name: DB_POOL_SIZE
+              value: "10"
+            - name: DISCOVERY_URL
+              value: "http://discovery-svc"
+            - name: DISCOVERY_PORT
+              value: "4000"
